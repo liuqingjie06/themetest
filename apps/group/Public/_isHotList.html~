@@ -1,0 +1,71 @@
+<div class="mainbox_appR">
+	<if condition="$config['createGroup']">
+      <div class="box_create">
+          <a href="{:U('group/Index/add')}" class="btn_group_c"></a>
+          <h4><a href="{:U('group/SomeOne')}">进入我的群组首页</a></h4>
+      </div>
+    </if>
+        <!--微群分类-->
+        <php>if(!empty($category_tree)){</php>
+        <div class="rankGroup_box">
+          <ul class="rankBlog">
+          <h4>群组分类</h4>
+            <volist name="category_tree" id="category_top">
+            <li>
+              <h3><a href="{:U('group/Index/search', array('cid'=>$category_top['a']))}" class="MIB_linkar">{$category_top['t']}</a><span>({$category_top['count']})</span></h3>
+             <!--二级分类 <div class="group_classtext MIB_linkbr">
+              <volist name="category_top['d']" id="category_son">
+                <a href="{:U('group/Index/search', array('cid'=>$category_son['a']))}">{$category_son['t']}</a>
+              </volist>
+              </div>-->
+            </li>
+            </volist>
+          </ul>
+        </div>
+        <php>}</php>
+        <!--/微群分类-->
+    <!--<div class="rankGroup_box clearfix">
+    <h4>群组热帖</h4>
+    <ul class="rankBlog">
+        <li><b class="num no1"></b><a href="#">世预选国足VS新加坡</a><span>(28110)</span></li>
+        <li><b class="num no2"></b><a href="#">晒晒各地的小幸福</a><span>(20251)</span></li>
+        <li><b class="num no3"></b><a href="#">上海大火周年祭</a><span>(19256)</span></li>
+        <li><b class="num no4"></b><a href="#">本赛季NBA还有戏吗</a><span>(13956)</span></li>
+        <li><b class="num no5"></b><a href="#">天冷降温注意保暖</a><span>(9956)</span></li>
+        <li><b class="num no6"></b><a href="#">宫斗剧大PK</a><span>(7956)</span></li>
+        <li><b class="num no7"></b><a href="#">三秒钟变王家卫</a><span>(6356)</span></li>
+        <li><b class="num no8"></b><a href="#">微影评《铁甲钢拳》</a><span>(1356</span></li>
+        <li><b class="num no9"></b><a href="#">三秒钟变王家卫</a><span>(6356)</span></li>
+        <li><b class="num no10"></b><a href="#">微影评《铁甲钢拳》</a><span>(1356)</span></li>
+    </ul>
+    </div>-->
+    <div class="rankGroup_box clearfix lineS_top">
+      <php>if (!empty($hot_group_list)) {</php>
+      <h4>群组排行榜</h4>
+      <dl class="fans_toplist">
+      <dt><span class="right">成员数</span>群组</dt>
+        <volist name="hot_group_list" id="hot_group">
+          <php>if($key>2){ $class='no'; }else{ $class='no top'.($key+1); }</php>
+          <dd>
+            <span>{$hot_group['membercount']}</span>
+            <em class="{$class}">{$key+1}</em>
+            <a href="{:U('group/Group/index', array('gid'=>$hot_group['id']))}">
+              <img src="__ROOT__/thumb.php?w=25&h=25&t=f&url={$hot_group['logo']|get_photo_url}" class="userPhoto">
+            </a>
+            <a target="_self" class="username" href="{:U('group/Group/index', array('gid'=>$hot_group['id']))}">{$hot_group['name']|getShort=6,'...'}</a>
+          </dd>
+        </volist>
+      </dl>
+      <php>} // end if</php>
+    </div>
+    <php>if (!empty($hot_tags_list)) {</php>
+    <div class="right_box">
+      <h2>热门群标签</h2>
+      <ul class="topic_list">
+        <volist name="hot_tags_list" id="hot_tag">
+          <li><a href="{:U('group/Index/search', array('k'=>urlencode($hot_tag['tag_name'])))}">{$hot_tag['tag_name']}({$hot_tag['count']})</a></li>
+        </volist>
+      </ul>
+    </div>
+    <php>} // end if</php>
+</div>

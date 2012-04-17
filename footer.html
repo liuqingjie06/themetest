@@ -1,0 +1,21 @@
+<volist name="ts['ad']['footer']" id="vo">
+	<div class="ad_footer"><div class="ke-post">{$vo['content']}</div></div>
+</volist>
+<div class="footer_bg">
+<div class="footer">
+	<div>
+		<h1 align="center">ECJT University © 2012</h1>
+	</div>
+</div>
+</div>
+</div>
+<php>
+$ts['cnzz'] = getCnzz(false);
+if (!empty($ts['cnzz'])) {</php>
+<div style="display:none;">
+<script src="http://s87.cnzz.com/stat.php?id={$ts['cnzz']['cnzz_id']}&web_id={$ts['cnzz']['cnzz_id']}" language="JavaScript" charset="gb2312"></script>
+</div>
+<php>}</php>
+{:Addons::hook('public_footer')}
+</body>
+</html>
