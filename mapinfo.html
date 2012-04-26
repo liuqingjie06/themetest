@@ -1,30 +1,51 @@
 <meta name="viewport" content="initial-scale=1.0,user-scalable=no"/>
 <style type="text/css">
-	html {height:100%}
-    body {height:100%; margin:0px;padding:0px}
-    #map_canvas {height:90%}
+html {height:100%}
+body {height:100%; margin:0px;padding:0px}
+#map_canvas_gyh {height:90%}
+#expand{background:url(__THEME__/images/map-arrow-up.png) center -20px no-repeat;display:block;height:20px;width:100%;}
+#expand.expanded{background-image:url(__THEME__/images/map-arrow-down.png);}
+#expand:hover{background-position-y:0;}
 </style>
+<style type="text/css" media="screen">
+
+#copy a {color: #fff;}
+#chart {width: 100%;_width: 500px; overflow: auto;}
+.invisible {visibility: hidden;}
+.hidden {display: none;}
+#legend,
+#legend2 {-moz-border-radius: 2px;-webkit-border-radius: 2px;width: 1em;height: 1em;border: solid 1px #000;margin-right: .3em;line-height: 1;}
+#name, 
+#name2 {float: left;}
+#name div,
+#name2 div {float: left;}
+#placeholder {color: #999;}
+em {color: #666;font-style: normal;}
+form {margin: 0;padding: 0;}
+fieldset {margin: 0;padding: 0;border: none;}
+</style>		
+
 <script type="text/javascript"
 	src="http://maps.googleapis.com/maps/api/js?sensor=false">
 </script>
 <script type="text/javascript">
 
 var map;
-var nanchang=new google.maps.LatLng(28.230,115.904);
+var nanchang=new google.maps.LatLng(28.670,115.904);
 function HomeControl(controlDiv, map) {
 	
 	
   controlDiv.style.padding = '5px';
   
   // 页面名称
-  var controlUI = document.createElement('DIV');
+ /* var controlUI = document.createElement('DIV');
   controlUI.style.backgroundColor = 'white';
   controlUI.style.borderStyle = 'solid';
   controlUI.style.borderWidth = '2px';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
   controlUI.title = 'Click to set the map to Home';
-  controlDiv.appendChild(controlUI); 
+  controlDiv.appendChild(controlUI); */
   //搜索框
   var textUI = document.createElement('button');
   textUI.style.backgroundColor='#fff';
@@ -33,14 +54,14 @@ function HomeControl(controlDiv, map) {
   controlDiv.appendChild(textUI);
 
   // Set CSS for the control interior
- var controlText = document.createElement('DIV');
+ /*var controlText = document.createElement('DIV');
   controlText.style.fontFamily = 'Arial,sans-serif';
   controlText.style.fontSize = '12px';
   controlText.style.paddingLeft = '4px';
   controlText.style.paddingRight = '4px';
   controlText.innerHTML = '<a href="http://www.sina.com.cn">主页</a>';
   
-  controlUI.appendChild(controlText);
+  controlUI.appendChild(controlText);*/
 
   // Setup the click event listeners: simply set the map to Chicago
  google.maps.event.addDomListener(textUI, 'click', function() {
@@ -68,7 +89,315 @@ function HomeControl(controlDiv, map) {
      
 	  homeControlDiv.index = 1;
 	  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
-		}
 	  
+	  
+		
+		var locationArray=[];
+		var markersArray=[];
+		var j=1;
+
+		
+	if(navigator.geolocation) {
+			browserSupportFlag = true;
+			navigator.geolocation.getCurrentPosition(function(position) {
+			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			map.setCenter(initialLocation);
+			addMarkerforuserlocation(initialLocation);
+		}, function() {
+		 	 handleNoGeolocation(browserSupportFlag);
+		});
+		// Try Google Gears Geolocation
+		} else if (google.gears) {
+		browserSupportFlag = true;
+		var geo = google.gears.factory.create('beta.geolocation');
+		geo.getCurrentPosition(function(position) {
+		  initialLocation = new google.maps.LatLng(position.latitude,position.longitude);
+		  map.setCenter(initialLocation);
+		  addMarkerforuserlocation(initialLocation);
+		}, function() {
+		  handleNoGeoLocation(browserSupportFlag);
+		});
+		// Browser doesn't support Geolocation
+		} else {
+		browserSupportFlag = false;
+		handleNoGeolocation(browserSupportFlag);
+		}
+		
+		function handleNoGeolocation(errorFlag) {
+		if (errorFlag == true) {
+				  alert("Geolocation service failed.");
+				  initialLocation = newyork;
+				} else {
+				  alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+				  initialLocation = siberia;
+				}
+				map.setCenter(initialLocation);
+				addMarkerforuserlocation(initialLocation);
+		}//地址解析结束
+		
+		
+
+		// Try W3C Geolocation (Preferred)解析用户地理位置
+	function code_userlocation(){
+		if(navigator.geolocation) {
+			browserSupportFlag = true;
+			navigator.geolocation.getCurrentPosition(function(position) {
+			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			map.setCenter(initialLocation);
+			addMarkerforuserlocation(initialLocation);
+		}, function() {
+		 	 handleNoGeolocation(browserSupportFlag);
+		});
+		// Try Google Gears Geolocation
+		} else if (google.gears) {
+		browserSupportFlag = true;
+		var geo = google.gears.factory.create('beta.geolocation');
+		geo.getCurrentPosition(function(position) {
+		  initialLocation = new google.maps.LatLng(position.latitude,position.longitude);
+		  map.setCenter(initialLocation);
+		  addMarkerforuserlocation(initialLocation);
+		}, function() {
+		  handleNoGeoLocation(browserSupportFlag);
+		});
+		// Browser doesn't support Geolocation
+		} else {
+		browserSupportFlag = false;
+		handleNoGeolocation(browserSupportFlag);
+		}
+		
+		function handleNoGeolocation(errorFlag) {
+		if (errorFlag == true) {
+				  alert("Geolocation service failed.");
+				  initialLocation = newyork;
+				} else {
+				  alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+				  initialLocation = siberia;
+				}
+				map.setCenter(initialLocation);
+				addMarkerforuserlocation(initialLocation);
+		}//地址解析结束
+	};
+		function addMarkerforuserlocation(location)
+		{	
+			var image=new google.maps.MarkerImage("__PUBLIC__/../data/uploads/avatar/{$mid}/middle.jpg",
+				new google.maps.Size(48,48),
+				new google.maps.Point(0,0),
+				new google.maps.Point(24,24)
+			);	
+			markers = new google.maps.Marker		//添加一个标记
+			({
+				 position: location,
+				 map:map,					 
+				 title:'经度：'+location.lng()+'纬度: '+location.lat() +"这是您所在的位置",
+				icon:image
+			});
+			attachInfowindowforuserlocation(markers);	
+			markersArray.push(markers);
+			locationArray.push(location);
+		};
+		function attachInfowindowforuserlocation(marker)
+		 {
+				var stree= '<div id="content">'+ 
+				   '<div id="siteNotice">'+    '</div>'+ 
+				      '<h1 id="firstHeading" class="firstHeading">这是您现在所在位置</h1>'+ 
+					     '<div id="bodyContent">'+ 
+						    '<p>这里的经纬度为：</p>'+ marker.position
+							+'</div>'+'</div>'	;
+				  var infowindow = new google.maps.InfoWindow(
+					  {
+					  content: stree 
+					  });
+				  google.maps.event.addListener(marker, 'click',openInfoWindow(infowindow,marker));
+		 }		
+		
+		function addMarker(location,j)
+		{	
+			var image=new google.maps.Marker("1.png",
+				new google.maps.Size(20,32),
+				new google.maps.Point(0,0),
+				new google.maps.Point(0,32)
+			);	
+			markers = new google.maps.Marker		//添加一个标记
+			({
+				 position: location,
+				 map:map,					 
+				 title:'经度：'+location.lng()+'纬度: '+location.lat() +"这是您点击的第"+j+"个标签"
+			});
+			attachInfowindow(markers,j);	
+			markersArray.push(markers);
+			locationArray.push(location);
+				
+			j++;		
+		};	
+		
+		function attachInfowindow(marker, j)
+		 {
+				var stree= '<div id="content">'+ 
+				   '<div id="siteNotice">'+    '</div>'+ 
+				      '<h1 id="firstHeading" class="firstHeading">信息窗口</h1>'+ 
+					     '<div id="bodyContent">'+ 
+						    '<p>这里的经纬度为：</p>'+ marker.position+'<br>这是您作的'+'<b>'+j+'</b>个标记'
+							+'</div>'+'</div>'	;
+				  var infowindow = new google.maps.InfoWindow(
+					  {
+					  content: stree 
+					  });
+				  google.maps.event.addListener(marker, 'click',openInfoWindow(infowindow,marker));
+		 }	
+			
+		
+		var locationArray1=[					//京九线某段的线路经纬度
+						new google.maps.LatLng(28.722247938163914,115.87408513353444),
+						new google.maps.LatLng(28.723661594204806,115.87061904893494),
+						new google.maps.LatLng(28.72422434630353,115.86942814813233),
+						new google.maps.LatLng(28.725086403728064,115.86843036637879),
+						new google.maps.LatLng(28.725889651383422,115.8678027294693),
+						new google.maps.LatLng(28.727418509809137, 115.8669927023468),
+						new google.maps.LatLng(28.728763886727666, 115.86651526914216),
+						new google.maps.LatLng(28.728945581846265,115.86645827220059),
+						new google.maps.LatLng(28.72912668864039,115.8664059691248),
+						new google.maps.LatLng(28.72955711002195,115.86628057585335),
+						new google.maps.LatLng(28.730046329986514,115.86617664025403),
+						new google.maps.LatLng(28.730550835676727,115.86609684453583),
+						new google.maps.LatLng(28.731394613061312,115.86600833163834),
+						new google.maps.LatLng(28.74449375050538286,115.86443856881237),
+						new google.maps.LatLng(28.748159380478857,115.86392760799504),
+						new google.maps.LatLng(28.751099434310657,115.8635681919887704),
+						new google.maps.LatLng(28.75298241271018,115.86320542321778)
+				];
+				
+		var problemsArray=[								//线路上的问题
+				1,2,3,2,1,2,3,2,1,2,1,3,2,2,1,2,2,1,3,
+
+		];
+		
+		var flightPath = new google.maps.Polyline({				//在地图上画折线
+						path: locationArray1,
+						strokeColor: "red",
+						strokeOpacity: 1.0,
+						strokeWeight: 5
+					  });	
+		flightPath.setMap(map);
+		
+		setMarkersForProblems(map, locationArray1,problemsArray);	
+		
+		function setMarkersForProblems(map, locationArray1,problemsArray) {
+		  var image=[];
+		  image[1] = new google.maps.MarkerImage('__PUBLIC__/themes/themtest/images/icon/slight-pin.png',    
+			  new google.maps.Size(20, 32),      
+			  new google.maps.Point(0,0),     
+			  new google.maps.Point(12, 32));
+		  image[2] = new google.maps.MarkerImage('__PUBLIC__/themes/themtest/images/icon/fatal-pin.png',    
+			  new google.maps.Size(20, 32),      
+			  new google.maps.Point(0,0),     
+			  new google.maps.Point(12, 32));
+		  image[3] = new google.maps.MarkerImage('__PUBLIC__/themes/themtest/images/icon/serious-pin.png',    
+			  new google.maps.Size(20, 32),      
+			  new google.maps.Point(0,0),     
+			  new google.maps.Point(12, 32));
+			  
+		  for (var i = 0; i < locationArray1.length; i++) {
+			  switch (problemsArray[i]){
+				  case 1:userimage=image[1];break;		  
+				  case 2:userimage=image[2];break;
+				  case 3:userimage=image[3];break;
+			  }
+			var marker = new google.maps.Marker({
+					position: locationArray1[i],
+					map: map,        
+					icon: userimage,    
+					zindex:problemsArray[i],
+			});
+			attachInfowindowForProblem(marker,problemsArray[i]) ;
+		  }
+		};
+
+		function attachInfowindowForProblem(marker,j)
+		   {
+				var stree= '<div id="content">'+ 
+				   			'<h1 id="firstHeading" class="firstHeading">这里的超限等级为：</h1>'+ 
+					     	'<div id="bodyContent">'+ 
+						    '<b>'+j+'</b>级'+
+							'</div>'+
+							'</div>';
+				  var infowindow = new google.maps.InfoWindow(
+					  {
+					  content: stree 
+					  });
+					//infowindow.setMap(null) 
+				  google.maps.event.addListener(marker, 'click',openInfoWindow(infowindow,marker));
+			};		
+
+		 var visibleInfoWindow=null
+		 function openInfoWindow(infoWindow,marker)		//用于显示infowindow
+			{
+					return function(){			//此处用到了闭包
+						if(visibleInfoWindow){
+							visibleInfoWindow.close();
+						}
+						
+						infoWindow.open(map,marker);
+						visibleInfoWindow=infoWindow;
+					}
+			};
+			
+		
+			
+   }
+	
+	//initial结束
+	
+	
+	//地图的展开、收起功能
+	$(window).load(function(){
+	  	 // 
+ 		$("#expand.expanded").hide(10);
+ 		$("#expand").hide(10);
+ 		
+ 		$("#map_box").animate({height:300},500);
+ 		$("#map_canvas").animate({height:300},500,function(){
+ 			center=map.getCenter();
+ 		});
+ 		$("#map_box").animate({height:200},300);
+ 		$("#map_canvas").animate({height:200},300,function(){
+			 google.maps.event.trigger(map, "resize");
+			 map.setCenter(center);
+
+		  });  //resizeSetcenter()
+ 		$("#expand.expanded").show(1000)
+		
+	}); 	
+		
+	$(document).ready(function(){  
+		  $("#expand").click(function(){
+			  	center=map.getCenter();
+		  		$("#expand").hide(10); 
+		  		$("#map_box").animate({height:160},500); 
+		  		$("#map_canvas").animate({height:160},500,function(){
+				 google.maps.event.trigger(map, "resize");
+			 	map.setCenter(center);
+		  		}); 
+		  	$("#expand.expanded").show(10)
+     		});  
+	});
+	
+	$(document).ready(function(){  
+		  $("#expand.expanded").click(function(){  
+			  center=map.getCenter();
+			  $("#expand.expanded").hide(10);
+			  $("#map_box").animate({height:520},500);
+			  $("#map_canvas").animate({height:520},500,function(){
+				 
+				  google.maps.event.trigger(map, "resize");
+				  map.setCenter(center);
+
+			  });
+			  $("#expand").show(10)
+			  
+			});
+	});
+		
+	
+	
 	 
 </script>
