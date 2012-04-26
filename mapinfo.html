@@ -8,6 +8,45 @@
 	src="http://maps.googleapis.com/maps/api/js?sensor=false">
 </script>
 <script type="text/javascript">
+
+var map;
+var nanchang=new google.maps.LatLng(28.230,115.904);
+function HomeControl(controlDiv, map) {
+	
+	
+  controlDiv.style.padding = '5px';
+  
+  // 页面名称
+  var controlUI = document.createElement('DIV');
+  controlUI.style.backgroundColor = 'white';
+  controlUI.style.borderStyle = 'solid';
+  controlUI.style.borderWidth = '2px';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to set the map to Home';
+  controlDiv.appendChild(controlUI); 
+  //搜索框
+  var textUI = document.createElement('button');
+  textUI.style.backgroundColor='#fff';
+  textUI.value="hello world";
+  textUI.innerHTML="回到南昌";
+  controlDiv.appendChild(textUI);
+
+  // Set CSS for the control interior
+ var controlText = document.createElement('DIV');
+  controlText.style.fontFamily = 'Arial,sans-serif';
+  controlText.style.fontSize = '12px';
+  controlText.style.paddingLeft = '4px';
+  controlText.style.paddingRight = '4px';
+  controlText.innerHTML = '<a href="http://www.sina.com.cn">主页</a>';
+  
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to Chicago
+ google.maps.event.addDomListener(textUI, 'click', function() {
+    map.setCenter(nanchang);
+  });
+}
 	function initialize() {
 		var latlng=new google.maps.LatLng(28.670,115.904);
 		var myOptions={
@@ -15,7 +54,21 @@
 			center: latlng,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		};
-		var map=new google.maps.Map(document.getElementById("map_canvas"),
+	map=new google.maps.Map(document.getElementById("map_canvas"),
 			myOptions);
-	}
+	
+
+	// Create the DIV to hold the control and call the HomeControl() constructor
+	  // passing in this DIV.
+	  var homeControlDiv = document.createElement('DIV');
+	  var homeControl = new HomeControl(homeControlDiv, map);
+ 
+     //搜索框
+
+     
+	  homeControlDiv.index = 1;
+	  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+		}
+	  
+	 
 </script>
