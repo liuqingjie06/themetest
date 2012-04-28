@@ -105,6 +105,22 @@
                 </dl>
           </div>
         </li>
+        <php>if(!empty($my_group_list)){</php>
+		<li class="header_dropdown"><a href="{:U('group/index/newIndex')}" class="application">群组<span class="ico_arrow"></span></a>
+          <div class="dropmenu">
+                <dl class="group">
+                            <php>foreach($my_group_list as $key=>$value){</php>
+                                <dd><a href="{:U('Group/group/index',array('gid'=>$value['id']))}">{$value['name']}</a></dd>
+                            <php>}</php>
+                </dl>
+                <dl class="group_add">
+                <dd>
+                <php>if($moreGroup){</php><a href="{:U('group/SomeOne')}" class="right">更多»</a><php>}</php><a href="{:U('group/Index/add')}">创建群组</a> 
+                </dd>
+                </dl>
+          </div>
+        </li>
+        <php>}</php>
 		<li class="header_dropdown"><a href="{:U('home/Account')}" class="application">帐号<span class="ico_arrow"></span></a>
           <div class="dropmenu">
                 <dl class="setup">

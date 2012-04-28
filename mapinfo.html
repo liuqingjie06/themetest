@@ -77,8 +77,19 @@ function HomeControl(controlDiv, map) {
 		};
 	map=new google.maps.Map(document.getElementById("map_canvas"),
 			myOptions);
-	
+	map.mapTypes.set('plain', new google.maps.StyledMapType([
+	                                                         { featureType: "landscape", stylers: [ { visibility: "off" } ] },
+	                                                         { featureType: "road", stylers: [ { visibility: "on" }, { lightness: 98 } ] },
+	                                                         { featureType: "water", stylers: [ { visibility: "on" }] },
+	                                                         { featureType: "transit", stylers: [ { visibility: "on" }] },
+	                                                         { featureType: "administrative", elementType: "labels", stylers: [ { visibility: "off" } ] },
+	                                                         { featureType: "landscape", stylers: [ { visibility: "off" } ] },
+	                                                         { featureType: "landscape.natural", stylers: [ { visibility: "off" } ] },
+	                                                         { featureType: "administrative.country", stylers: [ { lightness: 99 }, { visibility: "off" } ] }
+	                                                       ]));
 
+	
+	  map.setMapTypeId('plain');
 	// Create the DIV to hold the control and call the HomeControl() constructor
 	  // passing in this DIV.
 	  var homeControlDiv = document.createElement('DIV');
@@ -343,10 +354,11 @@ function HomeControl(controlDiv, map) {
 	//地图的展开、收起功能
 	$(window).load(function(){
 	  	 // 
- 		$("#expand.expanded").hide(10);
  		$("#expand").hide(10);
+	  	//
+ 		//$("#expand").hide(10);
  		
- 		$("#map_box").animate({height:300},500);
+ 		/*$("#map_box").animate({height:300},500);
  		$("#map_canvas").animate({height:300},500,function(){
  			center=map.getCenter();
  		});
@@ -356,7 +368,7 @@ function HomeControl(controlDiv, map) {
 			 map.setCenter(center);
 
 		  });  //resizeSetcenter()
- 		$("#expand.expanded").show(1000)
+ 		$("#expand.expanded").show(10)*/
 		
 	}); 	
 		
@@ -369,7 +381,8 @@ function HomeControl(controlDiv, map) {
 				 google.maps.event.trigger(map, "resize");
 			 	map.setCenter(center);
 		  		}); 
-		  	$("#expand.expanded").show(10)
+		  	$("#map_header").css("visibility","hidden");
+		  	$("#expand.expanded").show(10)	;
      		});  
 	});
 	
@@ -384,7 +397,8 @@ function HomeControl(controlDiv, map) {
 				  map.setCenter(center);
 
 			  });
-			  $("#expand").show(10)			  
+			  $("#expand").show(10)	;	
+			  $("#map_header").css("visibility","visible");
 			});
 	});
 		
