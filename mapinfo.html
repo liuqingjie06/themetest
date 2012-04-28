@@ -53,20 +53,17 @@ function HomeControl(controlDiv, map) {
   textUI.innerHTML="回到南昌";
   controlDiv.appendChild(textUI);
 
-  // Set CSS for the control interior
- /*var controlText = document.createElement('DIV');
-  controlText.style.fontFamily = 'Arial,sans-serif';
-  controlText.style.fontSize = '12px';
-  controlText.style.paddingLeft = '4px';
-  controlText.style.paddingRight = '4px';
-  controlText.innerHTML = '<a href="http://www.sina.com.cn">主页</a>';
-  
-  controlUI.appendChild(controlText);*/
-
-  // Setup the click event listeners: simply set the map to Chicago
  google.maps.event.addDomListener(textUI, 'click', function() {
     map.setCenter(nanchang);
   });
+ 
+ //projection=google.maps.MapType.projection.Mercator;
+	google.maps.event.addListener(map,'center_changed',function(){
+		document.getElementById('L').innerHTML=map.getCenter().lat();
+		document.getElementById('B').innerHTML=map.getCenter().lng();
+		document.getElementById('x').innerHTML=map.getProjection().fromLatLngToPoint(map.getCenter()).x;
+		document.getElementById('y').innerHTML=map.getProjection().fromLatLngToPoint(map.getCenter()).y;
+	});
 }
 	function initialize() {
 		var latlng=new google.maps.LatLng(28.670,115.904);
@@ -77,16 +74,17 @@ function HomeControl(controlDiv, map) {
 		};
 	map=new google.maps.Map(document.getElementById("map_canvas"),
 			myOptions);
+
 	map.mapTypes.set('plain', new google.maps.StyledMapType([
-	                                                         { featureType: "landscape", stylers: [ { visibility: "off" } ] },
-	                                                         { featureType: "road", stylers: [ { visibility: "on" }, { lightness: 98 } ] },
-	                                                         { featureType: "water", stylers: [ { visibility: "on" }] },
-	                                                         { featureType: "transit", stylers: [ { visibility: "on" }] },
-	                                                         { featureType: "administrative", elementType: "labels", stylers: [ { visibility: "off" } ] },
-	                                                         { featureType: "landscape", stylers: [ { visibility: "off" } ] },
-	                                                         { featureType: "landscape.natural", stylers: [ { visibility: "off" } ] },
-	                                                         { featureType: "administrative.country", stylers: [ { lightness: 99 }, { visibility: "off" } ] }
-	                                                       ]));
+	                 { featureType: "landscape", stylers: [ { visibility: "off" } ] },
+	                 { featureType: "road", stylers: [ { visibility: "on" }, { lightness: 88 } ] },
+	                 { featureType: "water", stylers: [ { visibility: "on" }] },
+	                 { featureType: "transit", stylers: [ { visibility: "on" }] },
+	                 { featureType: "administrative", elementType: "labels", stylers: [ { visibility: "off" } ] },
+	                 { featureType: "landscape", stylers: [ { visibility: "off" } ] },
+	                 { featureType: "landscape.natural", stylers: [ { visibility: "off" } ] },
+	                 { featureType: "administrative.country", stylers: [ { lightness: 99 }, { visibility: "off" } ] }
+	             ]));
 
 	
 	  map.setMapTypeId('plain');
@@ -342,10 +340,7 @@ function HomeControl(controlDiv, map) {
 						infoWindow.open(map,marker);
 						visibleInfoWindow=infoWindow;
 					}
-			};
-			
-		
-			
+			};			
    }
 	
 	//initial结束
